@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manjari Meedeniya — Portfolio</title>
+
+<style>
+  :root{
+    --bg: #0c1116;
+    --surface: #131a21;
+    --surface-2: #1a232b;
+    --line: #232e38;
+    --line-soft: #1c252d;
+    --text: #e9eef2;
+    --text-dim: #93a3ae;
+    --text-faint: #5f717c;
+    --copper: #c9814f;
+    --copper-dim: #a8693e;
+    --solder: #4f9c72;
+    --solder-dim: #3c7a58;
+    --radius: 12px;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --maxw: 1080px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    background-image:
+      linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: -1px -1px;
+  }
+
+  a{ color: var(--copper); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+
+  :focus-visible{
+    outline: 2px solid var(--solder);
+    outline-offset: 3px;
+  }
+
+  h1,h2,h3{ font-family: var(--font-display); margin: 0; color: var(--text); letter-spacing: -0.01em; }
+
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--solder);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .eyebrow::before{
+    content: "";
+    width: 14px; height: 1px;
+    background: var(--solder-dim);
+  }
+
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position: sticky; top:0; z-index: 50;
+    backdrop-filter: blur(10px);
+    background: rgba(12,17,22,0.85);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner{
+    max-width: var(--maxw); margin:0 auto; padding: 14px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-brand{
+    font-family: var(--font-mono); font-size:13px; color:var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+  .nav-brand b{ color: var(--copper); }
+  nav.links{ display:flex; gap: 22px; flex-wrap: wrap; }
+  nav.links a{
+    color: var(--text-dim); font-size: 13px; font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+  nav.links a:hover{ color: var(--text); text-decoration:none; }
+
+  @media (max-width: 720px){
+    nav.links{ display:none; }
+  }
+
+  /* ---------- TRACE ---------- */
+  #trace-svg{
+    position: fixed;
+    left: 0; top: 0;
+    width: 40px; height: 100vh;
+    pointer-events: none;
+    z-index: 5;
+  }
+  @media (max-width: 900px){ #trace-svg{ display:none; } }
+  .trace-node{
+    position:absolute; left:14px;
+    width: 13px; height:13px; border-radius:50%;
+    background: var(--bg);
+    border: 2px solid var(--line);
+    transform: translate(-50%,-50%);
+    transition: border-color .3s ease, background .3s ease;
+  }
+  .trace-node.active{ border-color: var(--solder); background: var(--solder); box-shadow: 0 0 10px rgba(79,156,114,0.7); }
+  #trace-pulse{
+    position: fixed; left: 20px; top: 0;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--copper);
+    box-shadow: 0 0 8px var(--copper), 0 0 16px var(--copper);
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    pointer-events: none;
+    transition: top .08s linear;
+  }
+  @media (max-width: 900px){ #trace-pulse{ display:none; } }
+
+  section{ padding: 96px 0 40px; position: relative; }
+  section:first-of-type{ padding-top: 64px; }
+  .section-head{ margin-bottom: 44px; display:flex; align-items:flex-start; gap:16px; }
+  .section-icon{ flex:none; width:34px; height:34px; color: var(--copper); }
+  .section-title{ font-size: 30px; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding-top: 84px;
+    display:grid; grid-template-columns: 1.3fr 0.9fr; gap: 48px; align-items:center;
+  }
+  @media (max-width: 780px){ .hero{ grid-template-columns: 1fr; } }
+  .hero h1{ font-size: clamp(34px, 5vw, 54px); line-height:1.08; }
+  .hero .role{ font-family: var(--font-mono); color: var(--copper); font-size: 15px; margin-top:14px; letter-spacing: 0.03em; }
+  .hero p.bio{ color: var(--text-dim); margin-top: 20px; font-size: 16px; max-width: 54ch; }
+  .hero-actions{ display:flex; gap: 14px; margin-top: 30px; flex-wrap: wrap; }
+  .btn{
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.03em;
+    padding: 12px 20px; border-radius: 7px; border: 1px solid var(--line);
+    display:inline-flex; align-items:center; gap:9px; transition: all .2s ease;
+    background: var(--surface);
+  }
+  .btn:hover{ text-decoration:none; border-color: var(--copper); transform: translateY(-1px); }
+  .btn.primary{ background: var(--copper); border-color: var(--copper); color: #10141a; font-weight:600; }
+  .btn.primary:hover{ background: var(--copper-dim); border-color: var(--copper-dim); }
+  .btn svg{ width:14px; height:14px; }
+
+  .hero-photo-frame{
+    aspect-ratio: 4/5; border-radius: 16px; border: 1px solid var(--line);
+    background: var(--surface); position: relative; overflow: hidden;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 16px 36px rgba(0,0,0,0.6);
+  }
+  .hero-photo-frame img{ width:100%; height:100%; object-fit: cover; display:block; transition: transform 0.4s ease, filter 0.4s ease; }
+  .hero-photo-frame:hover img{ transform: scale(1.03); filter: brightness(1.05); }
+  .frame-corner{ position:absolute; width:18px; height:18px; border: 2px solid var(--solder-dim); opacity:.8; pointer-events:none; }
+  .frame-corner.tl{ top:10px; left:10px; border-right:none; border-bottom:none; }
+  .frame-corner.br{ bottom:10px; right:10px; border-left:none; border-top:none; }
+
+  .contact-strip{ display:flex; gap:18px; flex-wrap:wrap; margin-top:26px; font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); }
+  .contact-strip a{ color: var(--text-dim); }
+  .contact-strip a:hover{ color: var(--copper); }
+  .contact-strip span{ display:inline-flex; align-items:center; gap:7px; }
+  .contact-strip svg{ width:14px; height:14px; opacity:.8; }
+
+  /* ---------- PROJECT CARDS & GALLERIES ---------- */
+  .subhead{ font-family: var(--font-mono); font-size:12px; color: var(--text-faint); text-transform:uppercase; letter-spacing:.12em; margin: 6px 0 18px; }
+  .ongoing-card{
+    border: 1px solid var(--solder-dim); background: linear-gradient(180deg, rgba(79,156,114,0.07), transparent);
+    border-radius: var(--radius); padding: 26px; margin-bottom: 46px; position:relative;
+  }
+  .status-pill{
+    font-family: var(--font-mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color: var(--solder); border:1px solid var(--solder-dim); padding: 3px 9px; border-radius: 20px;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .status-pill::before{ content:""; width:6px; height:6px; border-radius:50%; background: var(--solder); box-shadow: 0 0 6px var(--solder); animation: blink 1.6s infinite ease-in-out; }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:.35;} }
+
+  .project-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 780px){ .project-grid{ grid-template-columns:1fr; } }
+  .card{
+    border:1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+    padding: 24px; display:flex; flex-direction:column; gap: 14px;
+    transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{ border-color: var(--copper-dim); transform: translateY(-3px); box-shadow: 0 12px 28px rgba(0,0,0,0.4); }
+  .card h3{ font-size: 18px; }
+  .card .dates{ font-family: var(--font-mono); font-size:11px; color: var(--text-faint); }
+  .card ul{ margin:4px 0 0; padding-left: 18px; color: var(--text-dim); font-size: 14px; }
+  .card ul li{ margin-bottom: 5px; }
+  .tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top:2px; }
+  .tag{ font-family: var(--font-mono); font-size: 10.5px; color: var(--copper); border:1px solid var(--copper-dim); padding: 2px 8px; border-radius: 20px; }
+  .card-links{ margin-top: auto; padding-top: 8px; display:flex; gap:14px; font-family: var(--font-mono); font-size:12px; }
+
+  /* Master Gallery Layout */
+  .gallery{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  .gallery-img-wrapper{
+    overflow: hidden;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    width: 180px;
+    height: 135px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .gallery img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s cubic-bezier(0.2, 0, 0.2, 1), filter 0.35s ease;
+  }
+  .gallery-img-wrapper:hover img{
+    transform: scale(1.06);
+    filter: brightness(1.1);
+  }
+
+  /* Diagrams: Extended horizontal aspect */
+  .gallery-img-wrapper.compact-diagram{
+    width: 280px;
+    height: 150px;
+  }
+  .gallery-img-wrapper.compact-diagram img{
+    object-fit: contain;
+    background: #ffffff;
+    padding: 8px;
+  }
+
+  /* Membership Committee: Prominent Square Frame */
+  .gallery-img-wrapper.large-membership{
+    width: 220px;
+    height: 220px;
+  }
+
+  /* Selection Committee: Clean Square Frame */
+  .gallery-img-wrapper.compact-selection{
+    width: 150px;
+    height: 150px;
+  }
+
+  /* ---------- TECHNICAL SKILLS ---------- */
+  .tech-skills-card{
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 26px;
+  }
+  .tech-skills-list{
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-dim);
+    font-size: 14.5px;
+  }
+  .tech-skills-list li{
+    margin-bottom: 10px;
+  }
+  .tech-skills-list li:last-child{
+    margin-bottom: 0;
+  }
+  .tech-skills-list b{
+    color: var(--text);
+  }
+
+  /* ---------- VOLUNTEERING ---------- */
+  .vol-list{ display:flex; flex-direction:column; gap:0; }
+  .vol-item{
+    display:grid; grid-template-columns: 200px 1fr; gap: 24px;
+    padding: 26px 0; border-top: 1px solid var(--line);
+  }
+  .vol-list .vol-item:last-child{ border-bottom: 1px solid var(--line); }
+  @media (max-width: 700px){ .vol-item{ grid-template-columns: 1fr; gap: 8px; } }
+  .vol-dates{ font-family: var(--font-mono); font-size: 12px; color: var(--text-faint); }
+  .vol-org{ color: var(--copper); font-size: 13.5px; margin-top: 4px; }
+  .vol-role{ font-size: 16.5px; font-weight: 600; margin-bottom: 4px; }
+
+  /* ---------- SKILLS & MEDIA GRID ---------- */
+  .hosting-highlight{
+    border: 1px solid var(--copper-dim);
+    background: linear-gradient(180deg, rgba(201,129,79,0.08), transparent);
+    border-radius: var(--radius); padding: 26px; margin-bottom: 30px;
+  }
+  .skills-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 700px){ .skills-grid{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 460px){ .skills-grid{ grid-template-columns: 1fr; } }
+  .skill-chip{
+    border:1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 14px 16px;
+    font-size: 13.5px; color: var(--text-dim);
+  }
+  .skill-chip b{ color: var(--text); display:block; font-family: var(--font-display); font-size: 15px; margin-bottom:3px; }
+
+  .callout-list{ margin: 14px 0 0; padding-left: 20px; color: var(--text-dim); font-size: 14px; }
+  .callout-list li{ margin-bottom: 6px; }
+
+  .media-grid-title{
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--copper);
+    margin-top: 24px;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  .media-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .video-embed{
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    aspect-ratio: 16/9;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.45);
+    background: #000;
+  }
+  .video-embed video, .video-embed iframe{
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  /* ---------- EXTRACURRICULAR ---------- */
+  .extra-card{
+    border:1px solid var(--line); background: var(--surface); border-radius: var(--radius); padding: 24px;
+  }
+
+  /* ---------- LANGUAGES ---------- */
+  .lang-card{
+    border: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--text-dim);
+    text-align: center;
+  }
+  .lang-card span{
+    color: var(--text);
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact-card{
+    border:1px solid var(--line); background: var(--surface); border-radius: var(--radius);
+    padding: 34px; text-align:center;
+  }
+  .contact-grid{ display:flex; justify-content:center; gap: 28px; flex-wrap:wrap; margin-top: 22px; }
+  .contact-grid a{ display:flex; flex-direction:column; align-items:center; gap:8px; color: var(--text-dim); font-family: var(--font-mono); font-size:12.5px; }
+  .contact-grid a:hover{ color: var(--copper); text-decoration:none; }
+  .contact-grid svg{ width: 22px; height:22px; }
+
+  footer{ text-align:center; padding: 40px 20px; color: var(--text-faint); font-family: var(--font-mono); font-size: 11.5px; }
+</style>
+</head>
+<body>
+
+<svg id="trace-svg"><line x1="20" y1="0" x2="20" y2="100%" stroke="#232e38" stroke-width="2"/></svg>
+<div id="trace-pulse"></div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand">MANJARI <b>MEEDENIYA</b> // ETE</div>
+    <nav class="links" id="nav-links"></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="about"></section>
+  <section id="projects"></section>
+  <section id="tech-skills"></section>
+  <section id="volunteering"></section>
+  <section id="extracurricular"></section>
+  <section id="skills"></section>
+  <section id="languages"></section>
+  <section id="contact"></section>
+</main>
+
+<footer id="footer"></footer>
+
+<script>
+/* ============================================================
+   DATA BLOCK
+   ============================================================ */
+const DATA = {
+  name: "Manjari Meedeniya",
+  fullName: "Manjari Manesha Hasanjali Meedeniya",
+  role: "Electronic & Telecommunication Engineering Undergraduate",
+  bio: "Third-year Electronic and Telecommunication Engineering undergraduate at the University of Moratuwa, with a strong interest in intelligent hardware, electronics, and real-world application design. Experienced in analog/power electronics, electronic product development, circuit design, and network infrastructure through hands-on projects, alongside an ongoing project in autonomous UAV development. Actively expanding expertise across circuit design, robotics, autonomous UAVs, embedded hardware, computer vision, machine learning, and wireless networks.",
+
+  photo: "images/M_Photo.jpeg",
+
+  cvLink: "https://drive.google.com/drive/folders/1RHrtw9vpqU_fsYF_BQswK7qfpIiqqTNV?usp=sharing",
+
+  email: "meedeniyammh.23@uom.lk",
+  phone: "071 557 7868",
+  location: "Colombo, Sri Lanka",
+  linkedin: "https://linkedin.com/in/manjarimeedeniya",
+  github: "https://github.com/manjarimeedeniya",
+
+  ongoingProjects: [
+    {
+      title: "Autonomous Quadcopter Project",
+      dates: "May 2026 – Present",
+      bullets: [
+        "Engineering an autonomous rotary-wing drone (under 2 kg, 80 cm diameter) to perform precision touch-and-go landings on sequential target platforms",
+        "Designing onboard power distribution and integrating safety fail-safes to meet strict airworthiness standards"
+      ],
+      tags: ["UAV", "Power Distribution", "Safety Systems"],
+      github: "",
+      images: []
+    }
+  ],
+
+  projects: [
+    {
+      title: "Atlas EQ v1 — Portable German Equatorial (GoTo) Star-Tracking Mount",
+      dates: "Feb 2026 – Jul 2026",
+      bullets: [
+        "Designed the bottom structural assembly for fine polar alignment for long-exposure astrophotography",
+        "Developed parts optimized for mild-steel laser cutting and 3D printing",
+        "Modeled complete assemblies in SolidWorks, exporting manufacture-ready DXF and STL files"
+      ],
+      tags: ["SolidWorks", "Laser Cutting", "3D Printing"],
+      github: "https://github.com/buddhima-imbulpitiya/Atlas-EQ-v1",
+      images: ["images/Atlas 1.jpeg", "images/Atlas 2.jpeg", "images/Atlas3.jpeg"]
+    },
+    {
+      title: "Analog All-Class Buck Converter",
+      dates: "Feb 2026 – May 2026",
+      bullets: [
+        "Co-designed the power stage, focusing on IRF540 MOSFET switching and freewheeling diode configuration",
+        "Transitioned high-side gate drive from a discrete BJT push-pull to an IR2104 IC with bootstrap circuitry",
+        "Handled power component selection, bench testing, and efficiency/load-regulation analysis"
+      ],
+      tags: ["Power Electronics", "LTspice", "Bench Testing"],
+      github: "https://github.com/manjarimeedeniya/Analog-All-Class-Buck-Converter",
+      images: ["images/buck.jpeg", "images/buck 2.png"]
+    },
+    {
+      title: "Weighing Scale Using Load Cells",
+      dates: "Jul 2025 – Dec 2025",
+      bullets: [
+        "Engineered the signal-conditioning schematic including instrumentation amplifier and zero/span adjustment circuits",
+        "Modeled and fabricated the protective 3D-printed enclosure and internal chassis",
+        "Selected hardware and completed full system assembly and integration"
+      ],
+      tags: ["Analog Design", "3D Printing", "Signal Conditioning"],
+      github: "https://github.com/manjarimeedeniya/Analog-Weighing-Scale-Using-Load-Cells-by-Team-Morpheus",
+      images: ["images/Final Product Photo 2.jpeg", "images/Final Product Photo 3.png"]
+    },
+    {
+      title: "Fall Track — Wearable Fall Detection & Pulse Monitoring Watch",
+      dates: "Feb 2025 – Jun 2025",
+      bullets: [
+        "Built a wearable device to detect sudden movement/orientation changes and notify caregivers promptly",
+        "Conceptualized and built the circuit design",
+        "Hand-selected low-power sensors and microcontrollers"
+      ],
+      tags: ["Wearables", "Embedded Systems", "Circuit Design"],
+      github: "https://github.com/hakammra/falltrack-watch",
+      images: ["images/falltrack watch.jfif", "images/falltrack team.jpeg"]
+    },
+    {
+      title: "University Backbone Network — Campus LAN Design",
+      dates: "Feb 2026 – Apr 2026",
+      bullets: [
+        "Designed and simulated a scalable, multi-tier campus backbone in Cisco Packet Tracer for 20+ years of expansion",
+        "Implemented a dual-stack IP scheme using IPv4 VLSM and IPv6 SLAAC",
+        "Configured OSPF, gateway redundancy, and inter-VLAN routing across four core distribution zones"
+      ],
+      tags: ["Networking", "Cisco Packet Tracer", "OSPF"],
+      github: "https://github.com/manjarimeedeniya/Design-of-Local-Area-Network-University-Backbone-Network",
+      images: ["images/university_backbone.png"],
+      isDiagram: true
+    },
+    {
+      title: "Two-Way Digital Paging System Using Software-Defined Radios",
+      dates: "Jul 2025 – Dec 2025",
+      bullets: [
+        "Co-developed a two-way digital paging system using SDR platforms and GNU Radio",
+        "Engineered addressing, acknowledgment, and error-handling mechanisms for reliable end-to-end communication"
+      ],
+      tags: ["SDR", "GNU Radio", "Wireless"],
+      github: "https://github.com/manjarimeedeniya/Two-Way-Digital-Paging-System-Using-Software-Defined-Radios",
+      images: []
+    }
+  ],
+
+  technicalSkills: [
+    { label: "Programming", detail: "Python, MATLAB, Java, C++" },
+    { label: "Design & Simulation Tools", detail: "SolidWorks, LTspice, GNU Radio, Cisco Packet Tracer" },
+    { label: "Robotics & Embedded Platforms", detail: "Arduino IDE, Webots, ROS2 Jazzy, Gazebo" },
+    { label: "Laboratory Skills", detail: "Proficient with oscilloscopes and standard signal-measurement instruments; comfortable troubleshooting lab equipment" }
+  ],
+
+  volunteering: [
+    {
+      role: "Member, Membership Development Committee Term 25/26",
+      org: "IEEE Student Branch, University of Moratuwa",
+      dates: "Feb 2026 – Present",
+      images: ["images/Membership Committee.jpeg"],
+      variant: "large-membership"
+    },
+    {
+      role: "Selection Committee Member, MoraForesight 4.0",
+      org: "IEEE Student Branch, University of Moratuwa",
+      dates: "Apr 2026 – Present",
+      images: []
+    },
+    {
+      role: "Member, Event Committee, RoboRoarz Sri Lanka",
+      org: "IEEE Student Branch, University of Moratuwa",
+      dates: "Oct 2025 – Present",
+      images: ["images/roboaroaz 1.jpeg", "images/roboaroaz 2.jpeg", "images/Roboaroaz OC.jpeg"]
+    },
+    {
+      role: "Selection Committee Member, MoraForesight 3.0",
+      org: "IEEE Student Branch, University of Moratuwa",
+      dates: "Feb 2025 – Aug 2025",
+      images: ["images/moraf 1.jpeg", "images/moraf2.jpeg"],
+      variant: "compact-selection"
+    },
+    {
+      role: "Event Secretary",
+      org: "SLRC Branch of the Electronic Club, University of Moratuwa",
+      dates: "Aug 2026 – Present",
+      images: []
+    },
+    {
+      role: "Member, Announcing Pillar, Mora Lenz",
+      org: "University of Moratuwa",
+      dates: "Feb 2026 – Present",
+      images: []
+    }
+  ],
+
+  extracurricular: [
+    {
+      title: "Badminton Tournaments",
+      description: "Competed in inter-hall / university badminton tournaments.",
+      images: ["images/Badminton 1.jpeg", "images/badminton 2.jpeg", "images/badminton 3.jpeg"]
+    }
+  ],
+
+  softSkills: [
+    { name: "Team Leadership", desc: "Led collaborative engineering teams across multi-month hardware projects." },
+    { name: "Technical Communication", desc: "Co-authored technical reports and presented design trade-offs clearly." },
+    { name: "Project Coordination", desc: "Coordinated timelines and deliverables across analog, embedded, and networking projects." },
+    { name: "Fast Learning Ability", desc: "Quickly picks up new tools — from SolidWorks to GNU Radio to ROS2." },
+    { name: "Public Speaking", desc: "Reserved Semi-Finalist, XVIII Speech Olympiad, Gavel Club of University of Moratuwa." }
+  ],
+
+  hostingHighlights: [
+    "Conducts online sessions and compères events for programmes organized by the IEEE Student Branch",
+    "Semi-Finalist, Mora Lenz Media Awards '25 (Sinhala Announcing Category)",
+    "Delivered event announcements at school and community events, ensuring clear communication with diverse audiences"
+  ],
+  hostingVideoFile: "images/ieee compering.mp4",
+  hostingYoutubeVideos: [
+    { title: "MoraForesight 3.0", id: "QxiDBv1Zng4" },
+    { title: "IEEE Online Sessions", id: "BpOgg6j1Jy0" }
+  ],
+
+  languages: "English (Intermediate) | Sinhala (Native) | French (Beginner)"
+};
+
+/* ============================================================
+   RENDERING LOGIC
+   ============================================================ */
+
+const ICONS = {
+  about: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.6-3.8 4.6-5.6 7-5.6s5.4 1.8 7 5.6"/></svg>`,
+  projects: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="7" y="7" width="10" height="10" rx="1.4"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg>`,
+  tech: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>`,
+  volunteering: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 20s-7-4.5-9-9c-1.4-3 1-6 4-6 2 0 3.6 1.2 5 3.2C13.4 6.2 15 5 17 5c3 0 5.4 3 4 6-2 4.5-9 9-9 z"/></svg>`,
+  extracurricular: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="6" r="2.4"/><path d="M12 8.4V15M6 21l6-6 6 6M9 12l-4-2M15 12l4-2"/></svg>`,
+  skills: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3.5M9 21.5h6"/></svg>`,
+  languages: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 5h12M7 2v3m-2 7a10 10 0 0 1 5-7m-3 7c1.5-2 3.5-4 5-4m-2 7l4 8m0 0l4-8m-4 8v-2"/></svg>`,
+  contact: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8l8 5 8-5"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>`
+};
+
+const SOCIAL_ICONS = {
+  mail: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/></svg>`,
+  phone: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 3h3l2 5-2.5 1.5a11 11 0 0 0 5 5L15 12l5 2v3c0 1.1-.9 2-2 2C10.5 19 5 13.5 5 6c0-1.1.9-2 2-2z"/></svg>`,
+  pin: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>`,
+  linkedin: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.86-3.06-1.87 0-2.16 1.46-2.16 2.96V21H9z"/></svg>`,
+  github: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.35 4.68-4.58 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>`
+};
+
+function gallery(images, isDiagram = false, variantClass = ''){
+  if(!images || images.length === 0){
+    return '';
+  }
+  let wrapperClass = variantClass;
+  if (isDiagram) wrapperClass = 'compact-diagram';
+
+  return `
+    <div class="gallery">
+      ${images.map(src => `
+        <div class="gallery-img-wrapper ${wrapperClass}">
+          <img src="${src}" alt="" loading="lazy">
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+/* ---------- ABOUT ---------- */
+function renderAbout(){
+  document.getElementById('about').innerHTML = `
+    <div class="hero">
+      <div>
+        <div class="eyebrow">About</div>
+        <h1>${DATA.name}</h1>
+        <div class="role">${DATA.role}</div>
+        <p class="bio">${DATA.bio}</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="${DATA.cvLink}" target="_blank" rel="noopener">
+            ${SOCIAL_ICONS.mail}
+            View CV
+          </a>
+          <a class="btn" href="#contact">Get in touch</a>
+        </div>
+        <div class="contact-strip">
+          <span>${SOCIAL_ICONS.mail}<a href="mailto:${DATA.email}">${DATA.email}</a></span>
+          <span>${SOCIAL_ICONS.phone}<a href="tel:${DATA.phone.replace(/\s/g,'')}">${DATA.phone}</a></span>
+          <span>${SOCIAL_ICONS.pin}${DATA.location}</span>
+        </div>
+      </div>
+      <div class="hero-photo-frame">
+        <img src="${DATA.photo}" alt="${DATA.name}">
+        <div class="frame-corner tl"></div>
+        <div class="frame-corner br"></div>
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- PROJECTS ---------- */
+function projectCard(p){
+  return `
+    <div class="card">
+      <div class="dates">${p.dates}</div>
+      <h3>${p.title}</h3>
+      <ul>${p.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
+      <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      ${gallery(p.images, p.isDiagram)}
+      <div class="card-links">
+        ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener">GitHub ↗</a>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderProjects(){
+  const ongoingHtml = DATA.ongoingProjects.map(p => `
+    <div class="ongoing-card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:14px; flex-wrap:wrap;">
+        <div>
+          <div class="dates">${p.dates}</div>
+          <h3 style="margin-top:4px;">${p.title}</h3>
+        </div>
+        <span class="status-pill">In progress</span>
+      </div>
+      <ul>${p.bullets.map(b=>`<li>${b}</li>`).join('')}</ul>
+      <div class="tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      ${gallery(p.images)}
+      ${p.github ? `<div class="card-links"><a href="${p.github}" target="_blank" rel="noopener">GitHub ↗</a></div>` : ''}
+    </div>
+  `).join('');
+
+  document.getElementById('projects').innerHTML = `
+    <div class="section-head">
+      <div class="section-icon">${ICONS.projects}</div>
+      <div>
+        <div class="eyebrow">Projects</div>
+        <h2 class="section-title">What I've been building</h2>
+      </div>
+    </div>
+    <div class="subhead">Ongoing</div>
+    ${ongoingHtml}
+    <div class="subhead">Completed</div>
+    <div class="project-grid">
+      ${DATA.projects.map(p => projectCard(p)).join('')}
+    </div>
+  `;
+}
+
+/* ---------- TECHNICAL SKILLS ---------- */
+function renderTechnicalSkills(){
+  document.getElementById('tech-skills').innerHTML = `
+    <div class="section-head">
+      <div class="section-icon">${ICONS.tech}</div>
+      <div>
+        <div class="eyebrow">Technical Capabilities</div>
+        <h2 class="section-title">Technical Skills</h2>
+      </div>
+    </div>
+    <div class="tech-skills-card">
+      <ul class="tech-skills-list">
+        ${DATA.technicalSkills.map(item => `<li><b>${item.label}:</b> ${item.detail}</li>`).join('')}
+      </ul>
+    </div>
+  `;
+}
+
+/* ---------- VOLUNTEERING ---------- */
+function renderVolunteering(){
+  document.getElementById('volunteering').innerHTML = `
+    <div class="section-head">
+      <div class="section-icon">${ICONS.volunteering}</div>
+      <div>
+        <div class="eyebrow">Volunteering</div>
+        <h2 class="section-title">Where I give my time</h2>
+      </div>
+    </div>
+    <div class="vol-list">
+      ${DATA.volunteering.map(v => `
+        <div class="vol-item">
+          <div class="vol-dates">${v.dates}</div>
+          <div>
+            <div class="vol-role">${v.role}</div>
+            <div class="vol-org">${v.org}</div>
+            ${gallery(v.images, false, v.variant || '')}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+/* ---------- EXTRACURRICULAR ---------- */
+function renderExtracurricular(){
+  document.getElementById('extracurricular').innerHTML = `
+    <div class="section-head">
+      <div class="section-icon">${ICONS.extracurricular}</div>
+      <div>
+        <div class="eyebrow">Extracurricular</div>
+        <h2 class="section-title">Outside the lab</h2>
+      </div>
+    </div>
+    ${DATA.extracurricular.map(x => `
+      <div class="extra-card">
+        <h3>${x.title}</h3>
+        <p style="color:var(--text-dim); font-size:14px; margin-top:8px;">${x.description}</p>
+        ${gallery(x.images)}
+      </div>
+    `).join('')}
+  `;
+}
+
+/* ---------- SKILLS & EVENT HOSTING ---------- */
+function renderSkills(){
+  const youtubeEmbeds = DATA.hostingYoutubeVideos.map(vid => `
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/${vid.id}" title="${vid.title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  `).join('');
+
+  document.getElementById('skills').innerHTML = `
+    <div class="section-head">
+      <div class="section-icon">${ICONS.skills}</div>
+      <div>
+        <div class="eyebrow">Soft Skills</div>
+        <h2 class="section-title">How I work with people</h2>
+      </div>
+    </div>
+
+    <div class="hosting-highlight">
+      <div class="eyebrow" style="color:var(--copper);">Event Hosting &amp; Announcing</div>
+      <p style="color:var(--text-dim); font-size:14.5px; max-width:60ch;">Comfortable in front of a mic and a crowd — from IEEE Student Branch sessions to campus-wide events.</p>
+      <ul class="callout-list">
+        ${DATA.hostingHighlights.map(h=>`<li>${h}</li>`).join('')}
+      </ul>
+      
+      <div class="media-grid-title">// Watch my YouTube event hosting sessions &amp; clips</div>
+
+      <div class="media-grid">
+        <div class="video-embed">
+          <video controls preload="metadata">
+            <source src="${DATA.hostingVideoFile}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        ${youtubeEmbeds}
+      </div>
+    </div>
+
+    <div class="skills-grid">
+      ${DATA.softSkills.map(s => `
+        <div class="skill-chip"><b>${s.name}</b>${s.desc}</div>
+      `).join('')}
+    </div>
+  `;
+}
+
+/* ---------- LANGUAGES ---------- */
+function renderLanguages(){
+  document.getElementById('languages').innerHTML = `
+    <div class="section-head">
+      <div class="section-icon">${ICONS.languages}</div>
+      <div>
+        <div class="eyebrow">Communication</div>
+        <h2 class="section-title">Languages</h2>
+      </div>
+    </div>
+    <div class="lang-card">
+      <span>${DATA.languages}</span>
+    </div>
+  `;
+}
+
+/* ---------- CONTACT ---------- */
+function renderContact(){
+  document.getElementById('contact').innerHTML = `
+    <div class="section-head">
+      <div class="section-icon">${ICONS.contact}</div>
+      <div>
+        <div class="eyebrow">Contact</div>
+        <h2 class="section-title">Let's connect</h2>
+      </div>
+    </div>
+    <div class="contact-card">
+      <h3>Get in touch</h3>
+      <p style="color:var(--text-dim); max-width:48ch; margin:10px auto 0;">Feel free to reach out for collaborations, project inquiries, or simply to say hello.</p>
+      <div class="contact-grid">
+        <a href="mailto:${DATA.email}">${SOCIAL_ICONS.mail} Email</a>
+        <a href="${DATA.linkedin}" target="_blank" rel="noopener">${SOCIAL_ICONS.linkedin} LinkedIn</a>
+        <a href="${DATA.github}" target="_blank" rel="noopener">${SOCIAL_ICONS.github} GitHub</a>
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- NAVIGATION & TRACE PULSE ---------- */
+function renderNav(){
+  const sections = [
+    { id: "about", label: "About" },
+    { id: "projects", label: "Projects" },
+    { id: "tech-skills", label: "Tech Skills" },
+    { id: "volunteering", label: "Volunteering" },
+    { id: "extracurricular", label: "Extracurricular" },
+    { id: "skills", label: "Soft Skills" },
+    { id: "languages", label: "Languages" },
+    { id: "contact", label: "Contact" }
+  ];
+
+  const navContainer = document.getElementById('nav-links');
+  navContainer.innerHTML = sections.map(s => `<a href="#${s.id}">${s.label}</a>`).join('');
+
+  sections.forEach(s => {
+    const node = document.createElement('div');
+    node.className = 'trace-node';
+    node.id = `trace-${s.id}`;
+    document.body.appendChild(node);
+  });
+}
+
+function updateTrace(){
+  const sections = ["about", "projects", "tech-skills", "volunteering", "extracurricular", "skills", "languages", "contact"];
+  const pulse = document.getElementById('trace-pulse');
+
+  sections.forEach(id => {
+    const sec = document.getElementById(id);
+    const node = document.getElementById(`trace-${id}`);
+    if (sec && node) {
+      const rect = sec.getBoundingClientRect();
+      const absTop = window.scrollY + rect.top + 30;
+      node.style.top = `${absTop}px`;
+
+      if (window.scrollY + window.innerHeight / 3 >= rect.top && window.scrollY + window.innerHeight / 3 < rect.bottom) {
+        node.classList.add('active');
+        if (pulse) pulse.style.top = `${absTop}px`;
+      } else {
+        node.classList.remove('active');
+      }
+    }
+  });
+}
+
+/* ---------- INITIALIZE ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  renderNav();
+  renderAbout();
+  renderProjects();
+  renderTechnicalSkills();
+  renderVolunteering();
+  renderExtracurricular();
+  renderSkills();
+  renderLanguages();
+  renderContact();
+
+  document.getElementById('footer').innerHTML = `© ${new Date().getFullYear()} ${DATA.fullName}. All rights reserved.`;
+
+  window.addEventListener('scroll', updateTrace);
+  window.addEventListener('resize', updateTrace);
+  setTimeout(updateTrace, 100);
+});
+</script>
+</body>
+</html>
